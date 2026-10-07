@@ -127,7 +127,13 @@ def fit_grid(drums, mix, sr, duration):
     res = res[np.abs(res) < 0.06]
     off = off + float(np.median(res))
     # first beat >= 0
-    off = off - P * math.floor(off / P)
+    if math.isnan(off) or math.isnan(P):
+        bpm = 120.0
+        P = 60.0 / bpm
+        off = 0.0
+        kick_res = np.zeros(1)
+    else:
+        off = off - P * math.floor(off / P)
     return bpm, P, off, res
 
 
